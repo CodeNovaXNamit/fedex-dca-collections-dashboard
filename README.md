@@ -1,10 +1,15 @@
-# fedex-dca-collections-dashboard
-Collections Dashboard with AI Prioritizer (Hackathon Prototype)
+📦 FedEx DCA Collections Dashboard with AI Prioritizer
+🚀 Project Overview
 
+FedEx works with multiple Debt Collection Agencies (DCAs) to recover overdue payments.
+Currently, much of this process relies on manual spreadsheets and emails, which leads to slow recoveries, poor visibility, and inefficient prioritization.
 
-This code has used basic ideas and we had planned to make it more futuristics and good for big corporations like fed ex.
+This project is a prototype AI-powered collections dashboard that:
 
-In this you are needed to run app.py and streamlit_app.py in different terminals.
+Centralizes overdue accounts
 
-This code is gonna use mongodb database after tommorow for more advanced solution.
-nothing more here
+Uses a lightweight ML model to prioritize accounts by likelihood of payment
+
+Provides a simple dashboard for monitoring and assignment
+
+All data used in this project is synthetic and created for demonstration purposes only.
