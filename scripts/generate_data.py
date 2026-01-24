@@ -4,7 +4,7 @@ import numpy as np
 # Reproducibility
 np.random.seed(42)
 
-N = 500  # number of synthetic accounts
+N = 5000  # number of synthetic accounts
 
 df = pd.DataFrame({
     "account_id": [f"A{1000+i}" for i in range(N)],
@@ -22,10 +22,42 @@ df = pd.DataFrame({
 
 # Synthetic label logic:
 # Higher chance to pay if amount and days overdue are low
+def payment_probability(row):
+    prob = 0.5  # base probability
+
+    # Amount effect (lower amount → higher chance)
+    if row["amount_due"] < 300:
+        prob += 0.25
+    elif row["amount_due"] < 700:
+        prob += 0.10
+    else:
+        prob -= 0.20
+
+    # Days overdue effect (fewer days → higher chance)
+    if row["days_overdue"] < 30:
+        prob += 0.30
+    elif row["days_overdue"] < 90:
+        prob += 0.10
+    else:
+        prob -= 0.25
+
+    # Contact fatigue effect
+    if row["num_previous_contacts"] > 3:
+        prob -= 0.15
+
+    # Add noise (real-world uncertainty)
+    prob += np.random.normal(0, 0.1)
+
+    # Clamp probability between 0 and 1
+    return max(0, min(1, prob))
+
+
+# Generate probabilistic labels
+df["payment_probability"] = df.apply(payment_probability, axis=1)
 df["label_paid_next_month"] = (
-    (df["amount_due"] < 400) &
-    (df["days_overdue"] < 60)
+    np.random.rand(len(df)) < df["payment_probability"]
 ).astype(int)
+
 
 # Save dataset
 df.to_csv("data/accounts_with_labels.csv", index=False)
